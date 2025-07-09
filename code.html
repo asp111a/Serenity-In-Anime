@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HD PICTURE 8K PICTURE</title> <!-- Reverted title -->
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #0a0a0a; /* Slightly lighter than body for depth */
+            border-bottom: 1px solid #333;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #0099ff; /* A vibrant blue, reverting from orange */
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        nav {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #181818; /* Dark gray for nav */
+            border-bottom: 1px solid #444;
+        }
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.1em;
+            padding: 8px 15px;
+            border-radius: 6px; /* Reverted from pill shape for consistency with original theme */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 500;
+        }
+        nav a:hover, nav a.active {
+            background-color: #007bff; /* Blue accent */
+            color: #ffffff;
+        }
+        .page {
+            display: none;
+            padding: 20px;
+        }
+        .page.active-page {
+            display: block;
+        }
+        .page h2 { /* Page titles */
+            text-align: center; /* Center category titles */
+            margin-top: 10px;
+            margin-bottom: 25px;
+            font-size: 2em; /* Slightly larger for category titles */
+            color: #0099ff; /* Blue accent for titles */
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Default to 2 columns for mobile-first */
+            gap: 15px;
+        }
+        /* Medium devices (tablets, 768px and up) */
+        @media (min-width: 768px) {
+            .image-gallery {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+        /* Large devices (laptops, 992px and up) */
+        @media (min-width: 992px) {
+            .image-gallery {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .image-item {
+            background-color: #1c1c1c; /* Darker item background */
+            border: 1px solid #383838;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .image-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.35); /* Blue shadow */
+        }
+        .image-item img {
+            width: 100%;
+            height: 280px; /* Maintained height for uniformity. object-fit: cover will fill this. */
+            object-fit: cover; /* Ensures image covers the area, cropping if necessary */
+            border-radius: 6px;
+            margin-bottom: 15px; /* Space between image and download button */
+        }
+        /* Removed .image-item .image-title styles as title is removed */
+
+        .download-btn {
+            display: inline-block;
+            background-color: #007bff; /* Blue accent */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px; /* Standard button radius */
+            font-size: 0.9em;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: auto; /* Pushes button to bottom */
+        }
+        .download-btn:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.03);
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #0a0a0a;
+            font-size: 0.9em;
+            margin-top: 30px;
+            border-top: 1px solid #333;
+            color: #aaa;
+        }
+        /* Ad Banner Styling */
+        .ad-banner {
+            text-align: center;
+            margin: 20px auto; /* Center the banner and add vertical margin */
+            max-width: 300px; /* Match the max width of the ad code */
+        }
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            header h1 {
+                font-size: 2em;
+            }
+            nav {
+                padding: 10px 5px;
+            }
+            nav a {
+                font-size: 0.9em;
+                margin: 5px 5px;
+                padding: 7px 12px;
+            }
+            .page h2 {
+                font-size: 1.7em;
+            }
+            .image-item img {
+                height: 220px; /* Adjust image height for 2-column mobile */
+            }
+            .download-btn {
+                font-size: 0.85em;
+                padding: 8px 15px;
+            }
+            .ad-banner {
+                 margin: 15px auto; /* Adjust margin for smaller screens */
+            }
+        }
+         @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            nav {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            nav a {
+                margin: 6px 0;
+                width: 80%;
+                text-align: center;
+            }
+            .image-gallery {
+                gap: 10px;
+            }
+            .image-item img {
+                height: 180px; /* Further adjust image height */
+            }
+             .page h2 {
+                font-size: 1.5em;
+            }
+             .ad-banner {
+                 margin: 10px auto; /* Adjust margin for very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>HD PICTURE 8K PICTURE</h1> <!-- Reverted header title -->
+    </header>
+
+    <nav>
+        <a href="#" data-page="home" class="nav-link active">Home</a>
+        <a href="#" data-page="anime" class="nav-link">Anime Picture</a>
+        <a href="#" data-page="natural" class="nav-link">Natural Wellpeper</a>
+        <a href="#" data-page="girlboy" class="nav-link">Girl Boy Picture</a>
+    </nav>
+
+    <main>
+        <section id="home" class="page active-page">
+            <h2>All Pictures</h2>
+            <!-- Banner Ad Above Gallery -->
+            <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+            <div class="image-gallery">
+                <!-- All images will be populated by JavaScript -->
+            </div>
+            <!-- Banner Ad Below Gallery -->
+             <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+        </section>
+
+        <section id="anime" class="page">
+            <h2>Anime Pictures</h2>
+             <!-- Banner Ad Above Gallery -->
+            <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+            <div class="image-gallery">
+                <!-- Anime Images will be populated by JavaScript -->
+            </div>
+             <!-- Banner Ad Below Gallery -->
+             <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+        </section>
+
+        <section id="natural" class="page">
+            <h2>Natural Wallpapers</h2>
+             <!-- Banner Ad Above Gallery -->
+            <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+            <div class="image-gallery">
+                <!-- Natural Pictures will be populated by JavaScript -->
+            </div>
+             <!-- Banner Ad Below Gallery -->
+             <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+        </section>
+
+        <section id="girlboy" class="page">
+            <h2>Girl Boy Pictures</h2>
+             <!-- Banner Ad Above Gallery -->
+            <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+            <div class="image-gallery">
+                <!-- Girl Boy Images will be populated by JavaScript -->
+            </div>
+             <!-- Banner Ad Below Gallery -->
+             <div class="ad-banner">
+                <script type="text/javascript">
+                    atOptions = {
+                        'key' : '648f5a52975bbb206d734bac1f86e38b',
+                        'format' : 'iframe',
+                        'height' : 250,
+                        'width' : 300,
+                        'params' : {}
+                    };
+                </script>
+                <script type="text/javascript" src="//www.highperformanceformat.com/648f5a52975bbb206d734bac1f86e38b/invoke.js"></script>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="currentYear"></span> HD PICTURE 8K PICTURE. All rights reserved.</p> <!-- Reverted footer -->
+    </footer>
+
+    <script>
+        const imageData = {
+            anime: [ // Stays as "anime" key for Anime Picture category
+                "https://i.postimg.cc/d3BjfDxL/d579e176d57b6af0aadeb6a310295fa3.jpg",
+                "https://i.postimg.cc/9X7MYv7H/73988251d88c7b9a736e96f61dd244c7-1.jpg",
+                "https://i.postimg.cc/RVgj60ZS/8aeadcda26400cfe8737469e8354f642.jpg",
+                "https://i.postimg.cc/qqM148n8/77410055551000568cdcbe9eb4772be5.jpg",
+                "https://i.postimg.cc/RCytM7c4/830a5c0f9cd85a09c582a50a89e31dc1.jpg",
+                "https://i.postimg.cc/MZC5pMR2/a840ff24684e3afa29df2f7941f25bb1.jpg",
+                "https://i.postimg.cc/tJNsbMWg/18dc851194bafa32658bb79d1aef4ee6.jpg",
+                "https://i.postimg.cc/VkrzBhvb/0370589c8dff7647d6386e50efffd33f.jpg",
+                "https://i.postimg.cc/SR3vyghw/f05436f6b84fa56b05208d0f5be61972.jpg",
+                "https://i.postimg.cc/RFNr46tJ/da9113cfea60dba575c75f0190237f4e.jpg"
+            ],
+            girlboy: [ // Stays as "girlboy" key for Girl Boy Picture category
+                "https://i.postimg.cc/MT45CtVN/6845c86d06664c0d602c0e17ba10480f.jpg",
+                "https://i.postimg.cc/vB6fVyx2/9d4f821b53e68f04ff49a7c43499f15c.jpg",
+                "https://i.postimg.cc/66fT1TKL/a6e910ae97d6076692164821f6d3179d.jpg",
+                "https://i.postimg.cc/NM4Yb9XK/48369d14623abc236237b029671e988d.jpg",
+                "https://i.postimg.cc/j5mVMH5d/dc7ba1986c4112eb609dcc311f633e4b.jpg",
+                "https://i.postimg.cc/W4xSKXMK/ea2a24f95805c87e1cd5bed610c6f245.jpg",
+                "https://i.postimg.cc/C5h86q6X/e458e0f28662753f0e86b424a33c0472.jpg",
+                "https://i.postimg.cc/50xjxMqF/c79b6e8bb33bb2f8f0aaa543385e6bd0.jpg",
+                "https://i.postimg.cc/50xjxMqF/c79b6e8bb33bb2f8f0aaa543385e6bd0.jpg",
+                "https://i.postimg.cc/bvFNj2J4/4e152d58a8e570f1236abe6545469632.jpg"
+            ],
+            natural: [ // Stays as "natural" key for Natural Wellpeper category
+                "https://i.postimg.cc/7YLzDqt8/5cbd1b330882055eab2d06d6f6e447d2.jpg",
+                "https://i.postimg.cc/wM19f42P/77fb6f27a4fd3db77a0bec94193bcdbc.jpg",
+                "https://i.postimg.cc/6qxNc677/eca555389948889e85d7799a9fa2d84b.jpg",
+                "https://i.postimg.cc/8kZHLKqG/7493a220980feb008f5780ccd9428666.jpg",
+                "https://i.postimg.cc/50hFmzqw/d9faf0ced7471eb5c06e3e5a30d1b35e.jpg",
+                "https://i.postimg.cc/MKKzFTPR/0a1556e9f98d1b8a0ea0733a76fd5b86.jpg",
+                "https://i.postimg.cc/V6qbD67p/7b892307746a8e67078edd4c92f85611.jpg",
+                "https://i.postimg.cc/mZ0gtR8F/d546ef2007748926377bd3bfca44faa9.jpg",
+                "https://i.postimg.cc/15jcg8br/4efd8a3149b9d257b3d91a02e6260df6.jpg",
+                "https://i.postimg.cc/Vvy97pBZ/e93f30ba8187f8b60486dd46a25adaff.jpg"
+            ]
+        };
+
+        // Map data-page attributes to user-friendly names for alt text and download names
+        const categoryDisplayNames = {
+            anime: "Anime Picture",
+            natural: "Natural Wallpaper",
+            girlboy: "Girl Boy Picture",
+            home: "All Pictures" // Added for Home page file names
+        };
+
+        // Direct link ad URL
+        const directLinkUrl = 'https://www.profitableratecpm.com/zq3suxtsw?key=90a9d3f1931f541ba9def065143cf157';
+
+
+        function generateImageGallery(galleryId, imageDataSource, isHomePage = false) {
+            const galleryContainer = document.querySelector(`#${galleryId} .image-gallery`);
+            if (!galleryContainer) {
+                console.error(`Gallery container for ID "${galleryId}" not found.`);
+                return;
+            }
+            galleryContainer.innerHTML = '';
+
+            imageDataSource.forEach((imgData, index) => {
+                let imageUrl, imageAltText, baseFilenameForDownload, categoryKeyForName;
+
+                if (isHomePage) {
+                    imageUrl = imgData.url;
+                    categoryKeyForName = imgData.categoryKey; // Use original category key for name
+                    imageAltText = `${categoryDisplayNames[categoryKeyForName] || 'Image'} ${imgData.originalIndex + 1}`;
+                    baseFilenameForDownload = `${categoryKeyForName}_image_${imgData.originalIndex + 1}`;
+                } else {
+                    imageUrl = imgData;
+                    categoryKeyForName = galleryId; // Use galleryId for name
+                    const displayName = categoryDisplayNames[galleryId] || (galleryId.charAt(0).toUpperCase() + galleryId.slice(1));
+                    imageAltText = `${displayName} ${index + 1}`;
+                    baseFilenameForDownload = `${galleryId}_image_${index + 1}`;
+                }
+
+                let fileExtension = '.jpg';
+                const lastDot = imageUrl.lastIndexOf('.');
+                if (lastDot > -1 && lastDot < imageUrl.length - 1) {
+                    const ext = imageUrl.substring(lastDot);
+                    if (['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext.toLowerCase())) {
+                        fileExtension = ext.toLowerCase(); // Use lowercase extension
+                    }
+                }
+
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('image-item');
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = imageAltText; // Alt text for accessibility
+                img.loading = 'lazy';
+
+                // No title element needed
+
+                const downloadLink = document.createElement('a');
+                // Set href to the actual image URL, but the download will be intercepted by JS
+                downloadLink.href = imageUrl; 
+                downloadLink.textContent = 'Download';
+                downloadLink.classList.add('download-btn');
+                // Store original filename for later use in the event handler
+                downloadLink.setAttribute('data-filename', `${baseFilenameForDownload}${fileExtension}`);
+
+                itemDiv.appendChild(img);
+                itemDiv.appendChild(downloadLink);
+                galleryContainer.appendChild(itemDiv);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const allImagesForHome = [];
+            Object.keys(imageData).forEach(categoryKey => {
+                imageData[categoryKey].forEach((url, index) => {
+                    allImagesForHome.push({
+                        url: url,
+                        categoryKey: categoryKey, // Store the original category key
+                        originalIndex: index      // Store the original index within its category
+                    });
+                });
+            });
+
+            // Shuffle for home page
+            for (let i = allImagesForHome.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allImagesForHome[i], allImagesForHome[j]] = [allImagesForHome[j], allImagesForHome[i]];
+            }
+
+            // Generate galleries
+            generateImageGallery('home', allImagesForHome, true);
+            generateImageGallery('anime', imageData.anime);
+            generateImageGallery('natural', imageData.natural);
+            generateImageGallery('girlboy', imageData.girlboy);
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // --- Direct Link Ad Logic ---
+            // Use event delegation on the main content area
+            document.querySelector('main').addEventListener('click', (event) => {
+                // Check if the clicked element is a download button
+                if (event.target && event.target.classList.contains('download-btn')) {
+                    event.preventDefault(); // Prevent the default download action
+
+                    const downloadUrl = event.target.href; // Get the original image URL
+                    const filename = event.target.getAttribute('data-filename'); // Get the stored filename
+
+                    // Open the direct link ad in a new tab
+                    window.open(directLinkUrl, '_blank');
+
+                    // Trigger the actual file download shortly after
+                    // This approach opens the ad in a new tab AND starts the download
+                    // in the current tab, which is a common pattern.
+                    // It does NOT wait for the user to "go back" from the ad tab,
+                    // as reliably detecting that from the original page is complex/impossible.
+                    setTimeout(() => {
+                         const tempLink = document.createElement('a');
+                         tempLink.style.display = 'none'; // Hide the temporary link
+                         tempLink.href = downloadUrl;
+                         tempLink.setAttribute('download', filename); // Set the download filename
+                         document.body.appendChild(tempLink);
+                         tempLink.click(); // Programmatically click the link to start download
+                         document.body.removeChild(tempLink); // Clean up the temporary link
+                    }, 1000); // Delay of 1 second (1000 milliseconds) - adjust if needed
+                }
+            });
+            // --- End Direct Link Ad Logic ---
+        });
+
+        const navLinks = document.querySelectorAll('nav .nav-link');
+        const pages = document.querySelectorAll('.page');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                navLinks.forEach(navLink => navLink.classList.remove('active'));
+                pages.forEach(page => page.classList.remove('active-page'));
+
+                link.classList.add('active');
+                const pageId = link.getAttribute('data-page');
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active-page');
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
